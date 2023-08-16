@@ -36,30 +36,37 @@
 
 <script>
 //Your code goes here 
-	let selectedCube = null;
-    let offsetX = 0;
-    let offsetY = 0;
 
-    const cubes = document.querySelectorAll('.cube');
+  const items = document.querySelector('.items');
+  let isMouseDown = false;
+  let startX;
+  let scrollLeft;
 
-    cubes.forEach(cube => {
-      cube.addEventListener('mousedown', (event) => {
-        selectedCube = cube;
-        offsetX = event.clientX - cube.offsetLeft;
-        offsetY = event.clientY - cube.offsetTop;
-      });
-    });
+  items.addEventListener('mousedown', (e) => {
+    isMouseDown = true;
+    startX = e.pageX - items.offsetLeft;
+    scrollLeft = items.scrollLeft;
+    items.classList.add('active');
+  });
 
-    document.addEventListener('mousemove', (event) => {
-      if (selectedCube) {
-        selectedCube.style.left = `${event.clientX - offsetX}px`;
-        selectedCube.style.top = `${event.clientY - offsetY}px`;
-      }
-    });
+  items.addEventListener('mouseleave', () => {
+    isMouseDown = false;
+    items.classList.remove('active');
+  });
 
-    document.addEventListener('mouseup', () => {
-      selectedCube = null;
-    });
+  items.addEventListener('mouseup', () => {
+    isMouseDown = false;
+    items.classList.remove('active');
+  });
+
+  items.addEventListener('mousemove', (e) => {
+    if (!isMouseDown) return;
+    e.preventDefault();
+    const x = e.pageX - items.offsetLeft;
+    const walk = (x - startX) * 2; // Adjust the sliding speed if needed
+    items.scrollLeft = scrollLeft - walk;
+  });
+
 </script>
 
   </body>
