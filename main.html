@@ -36,7 +36,30 @@
 
 <script>
 //Your code goes here 
-	
+	let selectedCube = null;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    const cubes = document.querySelectorAll('.cube');
+
+    cubes.forEach(cube => {
+      cube.addEventListener('mousedown', (event) => {
+        selectedCube = cube;
+        offsetX = event.clientX - cube.offsetLeft;
+        offsetY = event.clientY - cube.offsetTop;
+      });
+    });
+
+    document.addEventListener('mousemove', (event) => {
+      if (selectedCube) {
+        selectedCube.style.left = `${event.clientX - offsetX}px`;
+        selectedCube.style.top = `${event.clientY - offsetY}px`;
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      selectedCube = null;
+    });
 </script>
 
   </body>
